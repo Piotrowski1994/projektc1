@@ -6,11 +6,12 @@
 int main(){
   int clientSocket, portNum, nBytes;
   char buffer[1024];
+  char buffer1[1024];
   struct sockaddr_in serverAddr;
   socklen_t addr_size;
 
   /*tworzenie socketu udp*/
-  clientSocket = socket(PF_INET, SOCK_DGRAM, 1);
+  clientSocket = socket(PF_INET, SOCK_DGRAM, 0);
 
   /*ustawianie wartosci*/
   serverAddr.sin_family = AF_INET;
@@ -34,8 +35,7 @@ int main(){
     /*otrzymanie wiadomosci*/
                 nBytes = recvfrom(clientSocket,buffer,1024,0,NULL, NULL);
 
-    printf("otrzymano z servera: %s\n",nBytes);
-
+    printf("otrzymano z servera: %s\n",buffer);
   }
 
   return 0;

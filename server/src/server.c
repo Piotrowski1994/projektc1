@@ -18,6 +18,7 @@ Description : Hello World in C, Ansi-style
 #include <stdlib.h>
 
 int main(){
+
   int udpSocket, nBytes;
   char buffer[1024];
   struct sockaddr_in serverAddr, clientAddr;
@@ -26,17 +27,20 @@ int main(){
   int i;
 
   /*tworzenie socketu*/
-  udpSocket = socket(PF_INET, SOCK_DGRAM, 0);
+  udpSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+  printf("utworzono socket \n");
 
   /*ustawienie wartosci*/
   serverAddr.sin_family = AF_INET;
   serverAddr.sin_port = htons(7891);
-  serverAddr.sin_addr.s_addr = "127.0.0.1";
+  serverAddr.sin_addr.s_addr =htonl(INADDR_ANY);
   memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
+  printf("ustawiono wartosci \n");
 
   /*utworzenie servera*/
   bind(udpSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
-
+  printf("utworzono server \n");
+		   //bind(sockfd, (struct sockaddr* ) &my_addr, sizeof(my_addr))==-1
 
   addr_size = sizeof serverStorage;
 
@@ -48,6 +52,7 @@ int main(){
     //for(i=0;i<nBytes-1;i++)
     //  buffer[i] = toupper(buffer[i]);
     /*wyswietlenie otrzymanej wiadomosci*/
+    //buffer[0]='a';
     printf("wyslane do klienta: %s\n",buffer);
     /*odeslanie wiadomosci*/
     sendto(udpSocket,buffer,nBytes,0,(struct sockaddr *)&serverStorage,addr_size);
